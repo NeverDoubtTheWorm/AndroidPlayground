@@ -1,0 +1,14 @@
+HW06
+    due friday
+    simple dictionary with DB access done on a background thread
+    no memory leaks; works even when there is a configuration change (without redoing the query)
+    use the techniques tought before today''s lecture
+Quickie Pattern intro
+    Adapter
+        Allows objects we write to work with existing GUI widgets
+            ListView of Views
+                each view has a Layout which defines how that list item will be displayed
+            an Adapter is used to populate the View with the data from our data source
+    Observer
+        Allows objects to (un)subscribe for notifications when an "interesting" object''s state changes
+        

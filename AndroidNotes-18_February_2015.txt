@@ -1,0 +1,38 @@
+Homework 02 redux due friday
+    redo hw2 with no memory leaks and using headless fragments
+HomeWork 03 Redux
+        assume:
+            APP starts
+            Activity goes away
+            Activity comes back
+            Background Thread completes
+        What is the sequence that UpdaterApplication and UpdatableActivity methods will be called?
+            UpdaterApplication.onCreate()
+            UpdaterApplication.loadDataFromServer()
+            UpdatableActivity.onStart()
+            UpdaterApplication.setUpdatable()
+            UpdatableActivity.onStop()
+            UpdaterApplication.setUpdatable()
+            UpdatableActivity.onStart()
+            UpdaterApplication.setUpdatable()
+            UpdaterApplication.updateCurrentActivity()
+            UpdatableActivity.updateActivityFromBgThread
+            Runnable.run()
+            UpdatableActivity.updateActivity()
+Loading Data from a Server
+        Assumption: we're' going to request data using a URL
+    Step 1: Give App Permission
+        Better: make app request permission to access the network when the app is installed
+
+        This is done by requesting the permission in the manifest AndroidManifest.xml
+        Above the Application section we want to add the line:
+            <uses-permission android:name="android.permission.INTERNET"/>
+    Step 2: Create a URL Object
+        String urlString = "http://www.tigers.com";
+        URL url = new URL( urlString );
+    Step 3: Create a BufferedReader
+        BufferedReader in = new BufferedReader( new inputStreamReader( url.openStream() ) );
+    Step 4: Read Data
+        Just like with file io
+    Step 5: Close the IO Stream
+        

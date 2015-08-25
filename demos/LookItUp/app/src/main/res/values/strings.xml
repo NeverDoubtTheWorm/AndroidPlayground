@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LookItUp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="termTextViewText">Term:</string>
+    <string name="DefinitionTextViewText">Definition:</string>
+    <string name="LookUpButtonText">Look Up</string>
+    <string name="updateButtonText">Update</string>
+    <string name="removeButtonText">Remove</string>
+</resources>

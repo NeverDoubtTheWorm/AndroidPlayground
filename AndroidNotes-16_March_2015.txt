@@ -1,0 +1,49 @@
+Quiz 4 redux
+    implicit intent is used when specifying the functionallity not the activity
+        //  1) Create the intent
+        //  2) Verify there is something that can handle that intent
+        //  3) start the intent
+            if( safe )
+                startActivity( intent );
+    explicit intent is used when starting an activity in the same application
+        Intent intent = new Intent( this, AnotherActivityInTheSame.class );
+
+    CRUD refers to thte data''s lifecycle
+    print results in format "last, first"
+        cursor.moveToFirst()
+        while( !cursor.isAfterLast() ){
+            String first = cursor.getString( 0 ); // takes index
+            String  last = cursor.getString( 1 ); // takes index
+            System.out.println( last + ", " + first );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+
+Android Documantation walkthrough -- UI
+    Layouts
+        Purpose: organize views within a view
+        Linear Layouts create either a column of views or a row of views
+        Padding adds space between layouts
+        Margins are properties of the layouts
+        Relative Layouts shows layouts in relation to its siblings
+        List View: column of layouts
+        Grid View: 
+    Guideline: Prefer shallow layout hierarchies to deep hierarchies
+        for performance
+    Specifying View Height and Width
+        match_parent = stretch to the size of the parent View (minus padding) but no larger
+        wrap_content = make big enough to enclose its content ( plus padding) but no larger
+        absolute size (best to use dp)
+    Layout Weight
+        to which children should any extra space be given? The important ones, of course!
+        weight roughly equal to importance
+            child a has weight 1
+            child b has weight 2
+            child c has weight 3
+
+            total weight = 6;  a = 1/6, b = 1/3, c = 1/2
+        To have equally sized children
+            set 0dp to height and set weights to 1
+    Gravity 
+        

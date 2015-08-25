@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Relative Layout Demo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="Red">Red</string>
+    <string name="Orange">Orange</string>
+    <string name="Yellow">Yellow</string>
+    <string name="Green">Green</string>
+    <string name="Blue">Blue</string>
+</resources>

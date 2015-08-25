@@ -1,0 +1,26 @@
+Android, SQL, and SQLite
+
+Using a Cursor
+		cursor.moveToFirst();
+		while(!cursor.isAfterlast() ){
+			X var = cursor.getX( column_index );	// indexes start at 0
+			// do stuff
+			cursor.moveToNext();
+		}
+
+		cursor.close(); 	// always do this when you're done using it
+	Types of data that can be retrieved
+		getBlob()  	=> byte[]
+		getDouble()
+		getFloat()
+		getInt()
+		getLong()
+		getShort()
+		getString()
+Create an app that can remove, lookup, and update terms and definitions
+	Plain text view for terms
+	Multiline text view for definition
+	Lookup, Update, Remove buttons
+	LookUp finds the term in the database
+	Update either creates the entry or changes the definition
+	Remove will remove the entry from database

@@ -1,0 +1,70 @@
+Maintain state in an Application object
+        An Application subclass is used to maintain global appictation state
+
+        Premise of the example we're going to look at next:
+        Application starts and downloads something from a server which will be displayed on the first display Activity. However, the user may navigate away from that activity before the download is complete. If they later return to the Activity, we want them to see the downloaded stuff.
+    UpdaterApplication
+            public class UpdaterApplication extends Application
+            {
+                UpdatableActivity currentActivity = null;
+
+                public synchronized void // synchronized only one synchronized method can be executed at a time
+                    setUpdatable(UpdatableActivity updatable){
+                        this.currentActivity = updatable;
+                    }
+                private synchronized void updateCurrentActivity(){
+                    if(currentActivity != null)
+                        currentActivity.updateActivityFromBgThread();
+                }
+                private void loadDataFromServer(){
+                    // ...
+                    // load data from server
+                    // ...
+                    updateCurrentActivity();
+                }
+                public void onCreate(){
+                    super.onCreate();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run(){
+                            loadDataFromServer();
+                        }});
+                    thread.start();
+                }
+            }
+        We'll' need to add to the AndroidManifest.xml in the Application section
+            android:name="UpdaterApplication" 
+    UpdatableActivity
+            public abstract class UpdatableActivity extends Activity
+            {
+                public final void updateActivityFromBgThread(){
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run(){
+                            updateActivity();
+                        }
+                    });
+                }
+                public abstract void updateActivity();
+
+                @Override
+                protected void onStart() {
+                    super.onStart();
+                    UpdaterApplication app = (UpdaterApplication)getApplication();
+                    app.setUpdatable(this);
+                }
+
+                @Override
+                protected void onStop(){
+                    UpdaterApplication app = (UpdaterApplication)getApplication();
+                    app.setUpdatable(null);
+                    super.onStop();
+                }
+            }
+HomeWork: due Wednesday (on paper)
+        assume:
+            APP starts
+            Activity goes away
+            Activity comes back
+            Background Thread completes
+        What is the sequence that UpdaterApplication and UpdatableActivity methods will be called?

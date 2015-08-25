@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/Sean%20Thomas/Dropbox/CIS4930/worker-fragments-master/worker-fragments-master/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Users/Sean%20Thomas/Dropbox/CIS4930/worker-fragments-master/worker-fragments-master/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">Worker Fragments</string>
+    <string name="cancel">Cancel</string>
+    <string name="menu_trigger_config_change">Trigger Config Change</string>
+    <string name="one_hundred_percent">100%</string>
+    <string name="start">Start</string>
+    <string name="task_cancelled_msg">Task cancelled!</string>
+    <string name="task_complete_msg">Task complete!</string>
+    <string name="task_progress_msg">Progress:</string>
+    <string name="task_started_msg">Task started!</string>
+    <string name="zero_percent">0%</string>
+    <!-- From: file:/C:/Users/Sean%20Thomas/Dropbox/CIS4930/worker-fragments-master/worker-fragments-master/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+</resources>

@@ -1,0 +1,191 @@
+Memory Leaks: Activities & Threads
+    Take 3: no leaks!
+            public class MainActivity extends Activity{
+                private bool mState = true;
+                @Override
+                protected void onCreate(Bundle savedInstanceState){
+                    super.onCreate(savedInstanceState);
+                    doSomethingGood();
+                }
+
+                @Override
+                protected void onDestroy(){
+                    super.onDestroy();
+                    mThread.close();
+                }
+                
+                private void doSomethingGood(){
+                    mThread = new MyThread();
+                    mThread.start();
+                }
+
+                private static class MyThread extends Thread{
+                    private boolean mRunning = false;
+
+                    @Override
+                    public void run(){
+                        mRunning = true;
+                        while(mRunning){
+                            try {
+                                Thread.sleep(1000);
+                            } catch(InterruptedException e){
+                                //Ignore Interrupt
+                            }
+                        }
+                    }
+
+                    public void close(){
+                        mRunning = false;
+                    }
+                }
+            }
+    Take 3a: no leaks!
+            public class MainActivity extends Activity{
+                private bool mState = true;
+                @Override
+                protected void onCreate(Bundle savedInstanceState){
+                    super.onCreate(savedInstanceState);
+                    doSomethingGood();
+                }
+
+                @Override
+                protected void onDestroy(){
+                    super.onDestroy();
+                    mThread.interrupt();
+                }
+                
+                private void doSomethingGood(){
+                    mThread = new MyThread();
+                    mThread.start();
+                }
+
+                private static class MyThread extends Thread{
+                    private boolean mRunning = false;
+
+                    @Override
+                    public void run(){
+                        mRunning = true;
+                        while(!interrupted()){
+                            try {
+                                Thread.sleep(1000);
+                            } catch(InterruptedException e){
+                                break;
+                            }
+                        }
+                    }
+
+                    public void close(){
+                        mRunning = false;
+                    }
+                }
+            }
+Handling Activity configuration changes with "Headless Fragments"
+        Goal: we want the last created version of an Activity to be the one that recieves notifications from a worker Thread/AsyncTask
+        this solution has two parts...
+    a TaskFragment
+        This TaskFragment will be responsible for managing a background task; persisits across configuration changes
+
+            public class TaskFragment extends Fragment{
+                // things that this can work with must implement the following 
+                static interface TaskCallBackTarget {
+                    void onPreExecute();
+                    void onProgressUpdate( int percent );
+                    void onCancelled();
+                    void onPostExecute();
+                }
+
+                private TaskCallBackTarget mTarget;
+                private DummyTask mTask;
+
+                @Override
+                public void onAttach( Activity activity ){
+                    super.onAttach( activity );
+                    mTarget = (TaskCallBackTarget) activity;
+                }
+
+                @Override
+                public void onCreate( Bundle savedInstanceState ){
+                    super.onCreate( savedInstanceState );
+                    
+                    // retain this Fragmend across configuration changes
+                    setRetainInstance(true);
+
+                    // create the background task and execute it
+                    mTask = new DummyTask();
+                    mTask.start();
+                }
+
+                @Override
+                public void onDetach() {
+                    super.onDetach();
+                    mTarget = null;     // Avoid memory leak !!!
+                }
+
+                private class DummyTask extends AsyncTask<Void, Integer, Void> {
+                    @Override
+                    protected void onPreExecute() {
+                        if( mTarget != null)
+                            mTarget.onPreExecute();
+                    }
+                    
+                    @Override
+                    protected void doInBackground( Void... ignore ){
+                        for(int i = 0; !isCancelled() && i != 100; ++i){
+                            SystemClock.sleep( 100 );
+                            publishProgress( i );
+                        }
+                        retain null;
+                    }
+
+                    @Override
+                    protected void onProgressUpdate( Integer... percent ){
+                        if( mTarget != null )
+                            mTarget.onProgressUpdate( percent[0] );
+                    }
+
+                    @Override
+                    protected void onCancelled() {
+                        if( mTarget != null )
+                            mTarget.onCancelled();
+                    }
+
+                    @Override
+                    protected void onPostExecute( Void.... ignore ){
+                        if(mTarget != null)
+                            mTarget.onPostExecute();
+                    }
+                } // end DummyTask
+            } // End TaskFragment
+    a MainActivity
+        This activity is responsible for displaying the UI. 
+        Creates a TaskFragment to manage the task and recieves progress updates and results from the TaskFragment as they occur.
+            public class MainActivity extends Activity implements TaskFragment.TaskCallBackTarget {
+                private static final String TAG_TASK_FRAGMENT = "task_fragment";
+                private TaskFragment mFragment;
+
+                @Override
+                protected void onCreate( Bundle savedInstanceState ){
+                    super.onCreate( savedInstanceState );
+                    setContentView( R.layout.main );
+
+                    FragmentManager fm = getFragmentManager();
+                    mFragment = (TaskFragment) fm.findFragmentByTag( TAG_TASK_FRAGMENT );
+
+                    // If mFragment is non-null, then its currently being retained across configuration changes
+
+                    if( mFragment == null ){
+                        mFragment = new TaskFragment();
+                        fm.beginTransaction().add( mFragment, TAG_TASK_FRAGMENT ).commit();
+                    }
+                    // do anything that needs to be done
+                }
+
+                @Override
+                public void onPreExecute(){...}
+                @Override
+                public void onProgressUpdate( int percent ){...}
+                @Override
+                public void onCancelled(){...}
+                @Override
+                public void onPostExecute(){...}                
+            }

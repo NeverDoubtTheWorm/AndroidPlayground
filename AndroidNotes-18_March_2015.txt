@@ -1,0 +1,17 @@
+Layout Magic
+	Property names...
+		android:layout_weight
+		android:layout_height
+		android:layout_width
+		android:layout_margin
+		android:layout_marginTop
+		android:layout_marginLeft
+		android:layout_marginRight
+		android:layout_marginBottom
+		All of the preceding are requesting the parent layout use these properties when positioning this View
+			note: not all layouts support the layout_margin[X] properties
+				will ignore if it doesnt
+	The following are with respect to the View
+		android:padding
+		android:orientation   	<== for LinearLayout
+        android:gravity

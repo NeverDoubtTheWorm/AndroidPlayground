@@ -1,0 +1,34 @@
+SQL redux
+
+	code,tuts.com/tutorials
+Insertion
+	INSERT INTO table ( spec_col_1, spec_col_2, ... ) VALUES ( '...', '...', NULL, '...', ... ); 
+	NOTE: Semicolon terminates lines not newlines
+Query
+	SELECT what FROM  table WHERE constraints [ ORDER BY col[ASC/DESC] ];
+		what = which columns should be returned
+			* = everything
+			col1 
+			col1, col2, col3
+		constraints = what selection criteria  is being used
+			lastname = 'Smith'
+			value >= 1000000
+			species = 'cat' OR species = 'eagle'
+			firstname = 'John' AND lastname = 'Smith'
+			NOTE: AND has a higher precedence than OR
+					Parentheses can be used to group
+	Example: Counting Rows
+		how many rows are there in the table?
+			SELECT COUNT(*) FROM table;
+		Fancier Counting Example
+			SELECT species, COUNT(*) FROM table GROUP BY species;
+			the dataset returned [tabular form]  has two columns 
+				species      count(*)
+				=====++ 	==========
+				  Cat       	5
+				  Dog 			2
+				  Rat 			7
+Updating (single table)
+	UPDATE table SET col1 = [expression/DEFAULT], col2 = [expression/DEFAULT], ... [WHERE ...] [ORDER BY ...] [LIMIT count]; 
+Removing data
+	DELETE FROM table [WHERE ... ] [ORDER BY ... ] [LIMIT count ];

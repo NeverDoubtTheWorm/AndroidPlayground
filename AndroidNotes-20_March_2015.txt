@@ -1,0 +1,28 @@
+Colors
+    Primary Color 100% of one primary 
+    Secondary Color 50% of two different primary 
+    Tertiary Color 33% of one primary and 66% of a different primary
+RGB and CMY(K) are subtractive color models
+RGB is an additive color model
+    Standard RGB uses 8 bits to represent color
+    Specified as a hex value
+        #RRGGBB
+
+Relative Layouts
+
+Defining View ideas in a separate file
+    file name: ids.xml
+        <?xml version = "1.0" encoding = "utf-8">
+        <resources>
+            <item   name = "first-id"
+                    type = "id"
+                />
+            <item   name = "second-id"
+                    type = "id"
+                />
+            <item   name = "third-id"
+                    type = "id"
+                />
+        </resources>
+    this allows the layout to use these predefined ids "@id/an-id-name"
+    and Java code to use these predefined ids

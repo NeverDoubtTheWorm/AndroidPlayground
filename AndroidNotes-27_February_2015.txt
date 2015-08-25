@@ -1,0 +1,53 @@
+HW05: Write an application that 
+	allows the user to specify a URL
+	[In the background] check the contents of that site for the word "tiger" [case insensitive]
+ 	if it does not:
+ 		Pop-up a toast with an image that tells the user that the site is "uninteresting" and should be ingnored
+ 	else
+ 		pop-up a toast with an image that tells the user that the site should be bookmarked
+ 		Take them to that site (after a quick break to let them read the message)
+ 	for fun: use Java''s Pattern class {} to do the matching
+How to "activate" an activity
+
+Another Activity in the same Application
+	We''ll need to create an explicit Intent
+		The word explicit denotes that we are specifying exactly which class {} to "activate"
+			Intent intent = new Intent( this, AnotherActivityClassName.class );
+		To "trigger" the Intent
+			startActivity( intent );
+An Activity in a different Application
+	We''ll need to create an implicit Intent
+		the word implicit denotes the functionality that we want to trigger, but does not specify which Application or which Activity from that application will be run
+		three step process to trigger the Intent
+		[note: this example will be an Intent that allows us to view a website in a browser app]
+			Create the Intent
+				Uri site = Uri.parse( "http://tigers.com" );
+				Intent intent = new Intent( Intent.ACTION_VIEW, site );
+			Verify there is something on the device that can handle that Intent // for safety
+				PackageManager pm = getPackageManager();
+				List<ResolveInfo> activities = pm.queryIntentActivities( intent, 0 );
+				boolean safe = activities.size() > 0;
+			Start the Intent
+				if( safe )
+					startActivity( intent );
+Set Hierarchical Parent to MainActivity
+In res/drawable click new => image asset
+	new=> drawable resource file
+	choose for src for button
+
+	public void dontButtonHandler( view v ){ // in mainActivity
+		Intent intent = new Intent( this, FinalWarningActivity.class );
+		startActivity( intent );
+	}
+	public void warningButtonHandler( view v ) { // in FinalWarningActivity
+		// create intent
+		Uri site = Uri.parse( "http://www.cise.ufl.edu/~dts/pix/scarymonster.jpg" );
+		Intent intent = new Intent( Intent.ACTION_VIEW, site );
+		// verify existance of handler
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities( intent, 0 );
+		boolean safe = activities > 0;
+		// start the intent
+		if( safe )
+			startActivity( intent );		
+	}

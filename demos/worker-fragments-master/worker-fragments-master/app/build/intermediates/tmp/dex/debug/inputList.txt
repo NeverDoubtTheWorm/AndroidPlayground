@@ -1,0 +1,4 @@
+C:\Users\Sean Thomas\Dropbox\CIS4930\worker-fragments-master\worker-fragments-master\app\build\intermediates\classes\debug
+C:\Users\Sean Thomas\Dropbox\CIS4930\worker-fragments-master\worker-fragments-master\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-2434ec8548ddb68f9da13ad59795024ee80a3f81.jar
+C:\Users\Sean Thomas\Dropbox\CIS4930\worker-fragments-master\worker-fragments-master\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-febaf9498186aabe7d2baf7f81776663ca947847.jar
+C:\Users\Sean Thomas\Dropbox\CIS4930\worker-fragments-master\worker-fragments-master\app\build\intermediates\pre-dexed\debug\classes-2159679aac654a18653b182e875dcfc68ce641a2.jar

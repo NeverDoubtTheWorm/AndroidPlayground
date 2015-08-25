@@ -1,0 +1,130 @@
+How to attack a problem
+	Analysis: understand the problem
+		What is the problem asking for?
+	Who are the collaborators?
+	How do the collaborators interact/what are their responsibilities?
+	Design: translate the analysis into an implementable system
+		How do the collaborators discover eachother?
+		Who is responsible for creating them?
+		what are their lifespans?
+
+		Find the unanswered questions
+			Who creates the Counter Task?
+				The first main Activity?
+				The application?
+				something else?
+			Analysis redux:
+				What is the problem asking for?
+				Thinking about the Counter Task's' lifespan
+					The first Main Activity as creator
+						that the task isn't' needed untill the user takes some action, which isn't' true  XXX
+					The application
+						The task isn't' needed throughout the app's' lifespan, which is true   v/v/v/
+					something else?
+						possible, but we already have a good candidate
+				Discovery
+					Since we have a good match for the creator, let's' reuse it
+				Who are the collaborators?
+					An application
+					a background Counter Task
+					a Main Activity
+				How do the collaborators interact/what are their responsibilities?
+					Application 
+						create Counter Task
+						Handle Main Activity registration
+					Main Activity
+						display the current Count
+						run task when active
+						pause task when inactive
+						update the count when requested
+						register self with Application on creation
+						unregister self wiht Application on destruction
+					Counter task
+						When paused, do nothing 
+						When running, update count every second and notify the main activity of the new{} count
+			Design resumed
+				What are appropriate programming class names and programming language constructs for representing the collaborators?
+					Application
+						extend class Application
+						name: CounterApplication 
+					Main Activity
+						extend class Activity
+						name: MainActivity
+					Counter Task
+						need to choose between:
+							extend class AsyncTask XXX
+							extend class Thread vvv
+								want to call methods on the object to signal it [pause/resume]
+							implement interface Runnable XXX {}
+				How do objects collaborate?
+					CounterApplication
+						instantialte and start a CounterThread
+						on receiving a pause() from the MainActivity send an interrupt to the CounterThread
+						on receiving a resume() from the MainActivity send an interrupt to the CounterThread
+						on recieving a notify(seconds) cause the MainActivity to display the new count
+							where to locate teh making of the updating Runnable?
+								Application
+								Activity
+							In this case, it really doesn't matter, because whoever does it will simply call update Seconds() on the MainActivity
+					CounterThread
+						sits in a loop, sleeping for a second, and if it is in the running state, calls notify on the CounterApplication
+						If it is interrupted, toggle its running state
+					MainActivity
+						displays a count when instructed
+						notify the application to resume counting when the Activity''s onResume() is called 
+					Sequence of Events
+						CounterApplication is created automatically
+							onCreate()
+								instantiates CounterThread
+								calls start() on the CounterThread
+						CounterThread''s run() executes
+							do forever
+								if running 
+									sleep 1000
+								else 
+									sleep 1000000000
+								if running 
+									tell CounterApplication to update()
+						MainActivity is created
+							onCreate()
+								get reference to TextView
+							onResume()
+								tell CounterApplication to resume()
+							onPause()
+								tell CounterApplication to pause()
+						CounterApplication
+							event: pause()
+								interrupt() the CounterThread
+								unregister the Activity
+							event: resume()
+								interrupt() the CounterThread
+								register the Activity
+							event: update()
+								create a task (Runnable) and pass it to the UI thread
+
+HW 4
+	Implement this counter by wednesday
+UMLet
+
+public void run(){
+
+	while(true){
+		try{
+			thread.sleep(running?1000:100000000);
+		}catch(InterruptedException e){
+			interrupt();
+		}
+		if(interrupted()){
+			running = !running;
+		}
+		if(running){
+			update(++seconds)
+		}
+	}
+}
+
+public synchronized void update(final long seconds){
+	if( mTarget != null ){
+		Runnable notify
+	}
+}

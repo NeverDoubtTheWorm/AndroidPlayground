@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fragment_container"     type="id" />
+    <item name="picked_swatch"          type="id" />
+    <item name="hue_range"              type="id" />
+    <item name="sat_range"              type="id" />
+    <item name="val_range"              type="id" />
+    <item name="swatchConfigButton"     type="id" />
+    <item name="restartButton"          type="id" />
+    <item name="sortButton"             type="id" />
+    <item name="preview"                type="id" />
+    <item name="color_name"             type="id" />
+    <item name="color_details"          type="id" />
+</resources>

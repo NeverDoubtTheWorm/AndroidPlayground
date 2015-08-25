@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Tasks for Tigers v2.0</string>
+
+    <string name="title_activity_task">Task Editor</string>
+    <string name="add_task">Add task</string>
+
+    <string name="no_tasks">Hey tiger!  Add some tasks!</string>
+
+    <string name="task_edit_summary">Enter task summary here</string>
+    <string name="task_edit_description">Enter optional task description/details here</string>
+    <string name="task_edit_done">Done</string>
+
+    <string name="priority_urgent">Urgent</string>
+    <string name="priority_normal">Normal</string>
+    <string name="priority_low">Whenever</string>
+</resources>
+

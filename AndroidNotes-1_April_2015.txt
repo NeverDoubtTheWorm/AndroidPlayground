@@ -1,0 +1,17 @@
+Fragment-based UIs
+		Why?
+			act as components that can be shared by multiple activities
+			swap fragments in/out in the current Activity
+		ASIDE: mock-up the UI before you begin coding
+			not only layout, but also navigation [ how the UI changes in response to user actions ]
+
+	Loading fragments into an Activity
+		Two ways
+			set the View''s Content using a Layout
+					setContentView( R.layout.news_articles )
+				con: cannot dynamically swap the fragments
+			use the Fragment Manager to programmatically insert the Fragment
+
+				pro: allows the fragments to be dynamically swapped
+        Find demo at:
+            http://developer.android.com/training/basics/fragments/fragment-ui.html

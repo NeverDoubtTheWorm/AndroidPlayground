@@ -1,0 +1,7 @@
+Due date moved to thursday at midnight, Post Mortem due Wednesday
+Achromatic colours
+    Explicitly use an illegal hue value
+    Pick a favorite hue
+Initialize database
+    in oncreate for database helper
+Saturation will be constant per swatch only hues vary in gradient

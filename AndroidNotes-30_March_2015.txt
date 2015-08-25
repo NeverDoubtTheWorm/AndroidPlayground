@@ -1,0 +1,160 @@
+ X11 Colors: Take 2b
+    allow the user to add things to the list
+
+    //************************************************************************************************************/
+    Create an static public final array of color names
+    Create an static public final array of their hex values
+    Create an static public final integer that stores the count of the above arrays if they are equal
+
+    // Class level
+        static private List<X11Color> makeColorList() {
+            if( NAME.length < 0 ) throw new Error( "ERROR: internal data are inconsistent" );
+            ArrayList<X11Color> list = new ArrayList<~>
+        }
+
+        static public X11Color getColor( int i ) { return Colors.get( i ); }
+
+    // instance level
+        private X11Color( int i ) {
+            name = NAME[i];
+            hexcode = RGBHEX[i];
+        }
+
+        public String getName() { return name; }
+        public String getHexcode() { return hexcode; }
+        public int getColorAsInt() { return Color.parseColor( hexcode ); }
+
+    //**************************************************************************************************************/
+    // Create relative layout      color.xml
+        <RelativeLayout xmins.... >
+            android:id="@+id/color_layout_root"
+            android:orientation="horizontal"
+            android:Layout_margin="4dp"
+
+            <TextView
+                android:id="@+id/preview"
+                android:text"    "
+                android:typeface="monospace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:padding="8dp"
+                android:textSize="34sp"
+                />
+            <TextView
+                android:id="@+id/color_name"
+                android:text="@String/color_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOF="@id/preview"
+                android:padding="8dp"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/rgb_hex_code"
+                android:text="@String/rgb_hex_code"
+                android:typeface="monospace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/color_name"
+                android:layout_toRightOF="@id/preview"
+                android:padding="8dp"
+                android:textSize="12sp"
+                />
+
+
+        </RelativeLayout>
+    //*************************************************************************************************************/
+    // create adapter  // make javaclass X11ColorAdapter in the directory with the other classes
+        public class X11ColorAdapter extends ArrayAdapter<X11Color>{
+
+            private final List<X11Color> colorsList;
+
+
+            public X11ColorAdapter( Context context, List<X11Color> objects ){
+                super( context, 0, objects );
+                colorsList = objects;
+            }
+
+            private static class ViewHolder {
+                TextView preview;
+                TextView name;
+                TextView hexcode;
+
+            }
+
+
+            @Override
+            public View getView( int position, View convertView, ViewGroup parent ) {
+                ViewHolder viewHolder; // cache Views so we can avoid future lookups
+
+
+                // check if an existing view is being recycled or if not inflate a new one 
+                if ( convertView == null ) {
+                    viewHolder = new ViewHolder();
+                    convertView = 
+                        LayoutInflater.from( getContext() )
+                            .inflate( R.layout.color, parent, false );
+
+
+                    /// Find the (sub)Views to populate with data
+
+                    viewHolder.preview = (TextView) convertView.findViewById( R.id.preview );
+                    viewHolder.name = (TextView) convertView.findViewById( R.id.color_name );
+                    viewHolder.hexcode = (TextView) convertView.findViewById( R.id.rgb_hex_code );
+
+                    //cache the Views
+                    convertView.setTag( viewHolder );
+                } else {
+                    viewHolder = (ViewHolder) convertView.getTag()
+                }
+
+                // populate the (sub)Views
+                X11Color color = getItem( position );
+                viewHolder.preview.setBackgroundColor( color.getColorAsInt() );
+                viewHolder.name.setText( color.getName() );
+                viewHolder.hexcode.setText( color.getHexcode() );
+
+                return convertView;
+            }
+
+            public void remove( int position ){ // subclass removes item from list directly so we need to notify others
+                colorsList.remove( position );
+                notifyDataSetChanged();
+            }
+        }
+    //***************************************************************************************************************/
+    // in MainActivity.java
+        private ArrayList<X11Color> mList = null;
+        private X11ColorAdapter mAdapter = null;
+        private int mNextColor = 0;
+
+
+        {
+        // in onCreate(  )
+            if( mList == null ){
+                mList = new ArrayList<X11Color>();
+
+                for ( int i = 0; i < )
+            }
+            final ArrayAdapter adapter = X11ColorAdapter( this, mList );
+        }
+
+        public void addColorButtonHandler( View v ) {
+            // safety check
+            if ( mNextColor < X11Color.COUNT ) {
+                mAdapter.add( X11Color.getColor( mNextColor++ ) );
+            } else {
+                Toast.makeText( this, "Sorry no more Colors", Toast.LENGTH_LONG ).show();
+            }
+        }
+X11 Colors: Take 4
+    because we subclassed ArrayAdapter, it already optimizes the recycling of the Views for the items that scroll off the screen.
+
+    but we could be even better optimized if we cache:
+        an inflated layout
+        the views [ so we don''t have to find them by id ]
+
+    We''ll do this using the NameHolder pattern

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">X11Colors</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="rgb_hex_code">RGB HEX VALUE</string>
+    <string name="color_name">COLOR</string>
+    <string name="add_new_color">Add New Color</string>
+</resources>

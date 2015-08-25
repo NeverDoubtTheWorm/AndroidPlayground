@@ -1,0 +1,62 @@
+Quiz 5 redux:
+    Margins and Padding
+        Padding is extra space around content that has the same color as the background of the view
+        Margins are extra space around content that has the same color as the parent of the view
+    4 techniques for specifying a view''s dimension
+        wrap parent
+        wrap content
+        absolute
+        using weights
+    why define veiw ids in a separate file?
+        allows you to specify all or a subset of your views in one location
+        allows you to reuse names across activities
+        allows you to share names across activities and fragments
+            gives you a stronger type checking mechanism
+        file lives in / /ids.xml
+    What 4 things need to be done for ListView
+        get reference to ListView
+        create an adapter
+        associate adapter and ListView
+        add listnerEvents that we would like
+    How did you make a swatch ( hacky )
+        empty textview with background color
+    Parameters for ArrayAdapter
+        context
+        layout for each item in the list
+    Reason for ViewHolder
+        save time by having references to the views so we would not have to look them up by id
+    Howto implement ViewHolder?
+        Check if its been tagged
+        if not
+            store references to objects by setting the tag
+        user references from tag to set items for listitem
+Loaders, ContentProviders, & more!
+    
+
+    { ContentProvider }  <----> { ContentResolver }
+            /|\                        /|\
+             |                          |
+            \|/                        \|/
+       { SQLite DB}               { CursorLoader }  <----- { LoaderManager }
+                                       /|\
+                                        |
+                                       \|/
+         { ListView }  <-------> { CursorAdapter }
+
+    ContentProvider
+        purpose: manage a centralized data repository
+            example that data will be stored in a SQLite DB, but it need not be.
+        Allows other apps to use your app''s data
+        Exchanges data in a "table-like" form
+    ContentResolver
+        used to interact with a ContentProvider
+        gives us the basic CRUD ops
+    Loader [e.g., CursorLoader ]
+        purpose: load data asynchronously in an activity or a fragment
+            monitors the data source and automatically update whenever the data source''s content changes
+            cache data that survives being detached from an activity/fragment
+                the data are available when attached to a new{} activity/fragment
+            e.g., AsyncTaskLoader is subclassed for monitoring general data sources
+            e.g., CursorLoader is used specifically with SQlite DBs 
+    SimpleCursorAdapter
+        purpose: efficiently interface a CursorLoader and a ListView

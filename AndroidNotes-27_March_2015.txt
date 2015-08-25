@@ -1,0 +1,107 @@
+X11 Colors: Take1 redux
+    final ArrayAdapter adapter = 
+        new ArrayAdapter(  this,                                <= Context
+                           android.R.layout.simple_list_item_1, <= Layout to use
+                           mList                                <= array/list to adapt
+                           );
+
+    ArrayAdapter
+        the ArrayAdapter expects that it will be working with a TextView [represent an item in the ListView]. to set the text of that View, it''ll call .toString() on the object in the backing array/list
+X11 Colors: Take 2
+    Instead of adapting an ArrayList<String>s, we''ll adapt 
+
+    //************************************************************************************************************/
+    Create an static public final array of color names
+    Create an static public final array of their hex values
+    Create an static public final integer that stores the count of the above arrays if they are equal
+
+    // Class level
+        static private List<X11Color> makeColorList() {
+            if( NAME.length < 0 ) throw new Error( "ERROR: internal data are inconsistent" );
+            ArrayList<X11Color>
+        }
+    // instance level
+        private X11Color( int i ) {
+            name = NAME[i];
+            hexcode = RGBHEX[i];
+        }
+
+        public String getName() { return name; }
+        public String getHexcode() { return hexcode; }
+        public int getColorAsInt() { return Color.parseColor( hexcode ); }
+
+    //**************************************************************************************************************/
+    // Create linear layout color.xml
+        <LinearLayout xmins.... >
+            android:id="@+id/color_layout_root"
+            android:orientation="horizontal"
+
+            <TextView
+                android:id="@+id/rgb_hex_code"
+                android:text"@String/rgb_hex_code"
+                android:typeface="monospace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                />
+            <TextView
+                android:id="@+id/color_name"
+                android:text"@String/color_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                />
+
+
+        </LinearLayout>
+    //*************************************************************************************************************/
+    // create adapter  // make javaclass X11ColorAdapter in the directory with the other classes
+        public class X11ColorAdapter extends ArrayAdapter<X11Color>{
+
+            private final List<X11Color> colorsList;
+
+
+            public X11ColorAdapter( Context context, List<X11Color> objects ){
+                super( context, 0, objects );
+                colorsList = objects;
+            }
+
+            @Override
+            public View getView( int position, View convertView, ViewGroup parent ) {
+                // check if an existing view is being recycled or if not inflate a new one 
+                if ( convertView == null ) {
+                    convertView = 
+                        LayoutInflater.from( getContext() )
+                            .inflate( R.layout.color, parent, false );
+
+                }
+
+                /// Find the (sub)Views to populate with data
+
+                TextView name = (TextView) convertView.findViewById( R.id.color_name );
+                TextView hexcode = (TextView) convertView.findViewById( R.id.rgb_hex_code );
+
+                // populate the (sub)Views
+                X11Color color = getItem( position );
+                name.setText( color.getName() );
+                hexcode.setText( color.getHexcode() );
+
+                return convertView;
+            }
+
+            public void remove( int position ){ // subclass removes item from list directly so we need to notify others
+                colorsList.remove( position );
+                notifyDataSetChanged();
+            }
+        }
+    //***************************************************************************************************************/
+    // in MainActivity.java
+        {
+        // in onCreate(  )
+            if( mList == null ){
+                mList = new ArrayList<X11Color>();
+
+                for ( int i = 0; i < )
+            }
+            final ArrayAdapter adapter = X11ColorAdapter( this, mList );
+        }

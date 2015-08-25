@@ -1,0 +1,100 @@
+With Relational Databases, information is stored in a table
+    The ID typically, serves as the primary key
+        The primary key is the only key that needs to be unique
+    Relationships between tables use primary keys as links
+    CRUD --lifecycle Acronym
+        Create
+        Read
+        Update
+        Delete
+    SQLite overview
+        lightweight relational database engine
+        Limited Data Types
+            3 field Types
+                TEXT = java String 
+                INTEGER = java long
+                REAL = java double
+            datatype integrity is not enforced
+            referential integrity is not enforced
+                No foreign key constraints
+                No Join statement
+                    can be gotten around using triggers
+            Full Unicode Support
+                not installed on android by default
+                Saved in: DATA/data/APP_NAME/databases/FILENAME
+                    DATA = value returned by Environment.getDataDirectory()
+                    FILENAME is named when DB is created
+        Accessing data is slow so it is best performed asynchronously
+    SQLite Open Helper
+            lifecycle ops deal with the DB as a whole
+            CRUD ops deal with the DBs entries
+        CREATE TABLE table_name (key1_name key1_type, key2_name key2_type);
+        Example:
+            CREATE TABLE dictionary (term TEXT, definition TEXT)
+        DB lifecycle: Creation
+            Override SQLiteOpenHelper''s onCreate()
+
+                JAVA
+                public class DictionaryHelper extends SQLiteOpenHelper {
+                    public static final String DICTIONARY_TABLE_NAME = "dictionary";
+                    public static final String KEY_TERM = "term";
+                    public static final String KEY_DEFINITION = "definition";
+
+                    private static final String DICTIONARY_TABLE_CREATE = "CREATE TABLE " + (DICTIONARY_TABLE_NAME) + " (" + KEY_TERM + " TEXT, " + KEY_DEFINITION + " TEXT);";
+                    
+                    @Override
+                    public void onCreate
+                }
+        public void onUpdate( SQLiteDatabase db, ){
+            db.execSQL("DROP TABLE IF EXISTS " + DICTIONARY_TABLE_NAME);
+            onCreate( db );
+        }
+        
+        CRUD: using a DAO (Data Access Object)
+            public class DictionaryDAO{
+                private DictionaryHelper mHelper;
+                private SQLiteDatabase mDatabase;
+
+                public final static String DICT_TABLE = DictionaryHelper.DICTIONARY_TABLE_NAME;
+                public final static String DICT_TERM = DictionaryHelper.KEY_TERM;
+                public final static String DICT_DEF = DictionaryHelper.KEY_DEFINITION;
+
+                public DictionaryDAO(Context context){
+                    mHelper = new DictionaryHelper(context);
+                    mDatabase = mHelper.getWritableDatavase();
+                }
+
+                public long createDictionaryEntry( String term, String def ){
+                    ContentValues values = new ContentValues();
+
+                    values.put( DICT_TERM, term );
+                    values.put( DICT_DEF, def );
+
+                    return database.insert( DICT_TABLE, null, values );
+                }
+
+                public Cursor fetchAllEntries() {
+                    Cursor cursor = database.query( true, DICT_TABLE,
+                                                    new String[] { DICT_TERM, DICT_DEF },
+                                                    null, null, null, null, null null   );
+
+                    if( cursor != null ){
+                        cursor.moveToFirst();
+                    }
+                    return cursor;
+                }
+
+                public long updateDictionaryEntry( String term, String def ){
+                    ContentValues values = new ContentValues();
+
+                    values.put( DICT_TERM, term );
+                    values.put( DICT_DEF, def );
+
+                    return database.Update( DICT_TABLE, values, DICT_TERM, + "=?", new String[] { term } );
+                }
+
+                public boolean deleteDictionaryEntry( String term ){
+                    return database.delete(DICT_TABLE, values, DICT_TERM + "=" + term ) > 0;
+                }
+
+            }

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TermProject</string>
+    <string name="restartButtonText">Pick New Color</string>
+    <string name="sortButtonText">Configure Sort Order</string>
+    <string name="color_name">COLOR</string>
+    <string name="color_details">DETAILS</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="SwatchConfigButtonText">Configure Color Swatches</string>
+</resources>
